@@ -21,6 +21,10 @@ __pycache__/
 venv/
 ENV/
 
+
+.claude/
+CLAUDE.md
+
 # Python egg files
 *.egg
 *.egg-info/
