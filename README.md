@@ -1,14 +1,15 @@
 # E-commerce Business Analytics Dashboard
 
-A comprehensive business intelligence solution featuring both Jupyter notebook analysis and a professional Streamlit dashboard for e-commerce sales data with configurable time periods and reusable business metrics calculations.
+A professional Streamlit dashboard providing comprehensive analysis of e-commerce business performance with revenue trends, customer behavior, and operational metrics.
 
 ## Overview
 
-This project transforms a basic exploratory data analysis into a professional, maintainable business intelligence framework. The refactored solution provides:
+This project provides a complete business intelligence solution featuring both detailed Jupyter notebook analysis and an interactive Streamlit dashboard. The solution transforms raw e-commerce data into actionable business insights with:
 
-- **Configurable Analysis**: Easily analyze any time period or compare different years
+- **Interactive Dashboard**: Professional Streamlit interface with real-time filtering
+- **Configurable Analysis**: Easily analyze any time period or compare different years  
 - **Modular Architecture**: Reusable data loading and metrics calculation modules
-- **Professional Visualizations**: Business-oriented charts with proper formatting
+- **Professional Visualizations**: Business-ready charts with proper formatting
 - **Strategic Insights**: Automated generation of business recommendations
 
 ## Project Structure
@@ -89,38 +90,39 @@ data_analysis/
 
 ## Usage Guide
 
-### Streamlit Dashboard
-
-1. **Launch the dashboard**:
-   ```bash
-   streamlit run dashboard.py
-   ```
-
-2. **Navigate the interface**:
-   - Use the **year filter** in the top-right to select analysis period
-   - View **KPI cards** showing key metrics with trend indicators
-   - Explore **interactive charts** in the 2x2 grid layout
-   - Monitor **customer experience metrics** in the bottom row
-
-3. **Dashboard Features**:
-   - **Real-time filtering**: All charts update automatically when year is changed
-   - **Professional styling**: Clean, business-ready interface
-   - **Trend indicators**: Green/red arrows showing performance changes
-   - **Formatted values**: Currency displayed as $300K, $2M for readability
-
-### Notebook Analysis
+### Jupyter Notebook Analysis (Recommended)
 
 1. **Open the refactored notebook**: `EDA_Refactored.ipynb`
 
-2. **Configure analysis parameters** in the first code cell:
+2. **Configure analysis parameters** in the configuration cell:
    ```python
-   ANALYSIS_YEAR = 2023        # Year to analyze
-   COMPARISON_YEAR = 2022      # Comparison year (optional)
-   ANALYSIS_MONTH = None       # Specific month or None for full year
-   DATA_PATH = 'ecommerce_data/'
+   # Analysis Configuration
+   CURRENT_YEAR = 2023         # Primary analysis year
+   COMPARISON_YEAR = 2022      # Year for comparison
+   CURRENT_MONTH_START = 1     # Start month (1-12, or None for full year)
+   CURRENT_MONTH_END = 12      # End month (1-12, or None for full year)
+   
+   # Analysis parameters
+   TOP_N_CATEGORIES = 10       # Number of categories to analyze
+   TOP_N_STATES = 15          # Number of states to analyze
+   ORDER_STATUS_FILTER = 'delivered'  # Focus on completed orders
    ```
 
-3. **Run all cells** to generate the complete analysis
+3. **Run all cells** to generate the complete analysis with:
+   - Executive summary with key metrics
+   - Revenue performance analysis and trends
+   - Product category performance insights
+   - Geographic analysis with interactive maps
+   - Customer satisfaction and delivery metrics
+   - Strategic recommendations
+
+### Key Analysis Features
+
+- **Configurable Time Periods**: Easily analyze any year, quarter, or month
+- **Automatic Comparisons**: Built-in year-over-year analysis
+- **Professional Visualizations**: Business-ready charts and graphs
+- **Strategic Insights**: Automated generation of business recommendations
+- **Modular Code**: Reusable functions for consistent analysis
 
 ### Advanced Configuration
 
@@ -144,43 +146,53 @@ DATA_PATH = '/path/to/your/data/'
 status_filter = 'delivered'  # or 'shipped', 'processing', etc.
 ```
 
-### Module Usage
+### Module Usage Examples
 
 #### Data Loading Module
 ```python
-from data_loader import EcommerceDataLoader, load_and_process_data
+from data_loader import EcommerceDataLoader
 
-# Quick start
-loader, processed_data = load_and_process_data('ecommerce_data/')
-
-# Advanced usage
+# Initialize data loader
 loader = EcommerceDataLoader('ecommerce_data/')
-loader.load_raw_data()
-processed_data = loader.process_all_data()
 
-# Create filtered dataset
-sales_data = loader.create_sales_dataset(
-    year_filter=2023,
-    month_filter=None,
-    status_filter='delivered'
+# Load all datasets
+datasets = loader.load_all_datasets()
+
+# Create complete sales dataset with enrichment
+complete_sales = loader.create_complete_sales_dataset(status_filter='delivered')
+
+# Filter data by date range
+current_data = loader.filter_by_date_range(
+    complete_sales, 
+    start_year=2023, 
+    end_year=2023,
+    start_month=1,
+    end_month=12
 )
 ```
 
 #### Business Metrics Module
 ```python
-from business_metrics import BusinessMetricsCalculator, MetricsVisualizer
+from business_metrics import BusinessMetrics
 
-# Calculate metrics
-metrics_calc = BusinessMetricsCalculator(sales_data)
-report = metrics_calc.generate_comprehensive_report(
-    current_year=2023,
-    previous_year=2022
+# Initialize metrics calculator
+metrics_calc = BusinessMetrics(sales_data)
+
+# Calculate revenue metrics with comparison
+current_metrics = metrics_calc.calculate_revenue_metrics(
+    current_period_data, 
+    comparison_period_data, 
+    "2023 Full Year"
+)
+
+# Analyze product categories
+category_performance = metrics_calc.analyze_product_categories(
+    current_data, 
+    top_n=10
 )
 
 # Create visualizations
-visualizer = MetricsVisualizer(report)
-revenue_fig = visualizer.plot_revenue_trend()
-category_fig = visualizer.plot_category_performance()
+revenue_plot = metrics_calc.create_revenue_trend_plot(monthly_data)
 ```
 
 ## Key Business Metrics
